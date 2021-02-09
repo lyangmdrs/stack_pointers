@@ -33,26 +33,40 @@
  *
  */
 
-#define S_RAM 		0x20000000U 			// Initial RAM address
-#define RAM_SZ		(128 * 1024) 			// RAM Size = 128 KB
-#define E_RAM 		( (S_RAM) + (RAM_SZ) )	// Final RAM address
-#define S_STACK 	E_RAM					// Stack starts at the end of RAM
-
-#define S_MSP_STACK	S_STACK					// MSP space starts with Stack
-#define E_MSP_STACK ( S_STACK + 512 )		// MSP occupies the first 512 B of Stack
-
-#define S_PSP_STACK E_MSP_STACK				// PSP space starts at the end of MSP space
-
 __attribute__((naked)) void change_sp_to_psp(void)
 {
+	// Using Equal Assembler Directives to define macros compliant with assembly statements
+
+	__asm volatile (".equ S_RAM, 0x20000000");				// Initial RAM address
+	__asm volatile (".equ RAM_SZ, (128 * 1024)");			// RAM Size = 128 KB
+	__asm volatile (".equ E_RAM, ( (S_RAM) + (RAM_SZ) )");	// Final RAM address
+
+	__asm volatile (".equ S_STACK, E_RAM");					// Stack starts at the end of RAM
+
+	__asm volatile (".equ S_MSP_STACK, S_STACK");			// MSP space starts with Stack
+	__asm volatile (".equ E_MSP_STACK, ( S_STACK + 512 )");	// MSP occupies the first 512 B of Stack
+
+	__asm volatile (".equ S_PSP_STACK, E_MSP_STACK");		// PSP space starts at the end of MSP space
+
+
 	__asm volatile ("LDR R0, =S_PSP_STACK"); 	// Loads PSP start address to R0 register
 	__asm volatile ("MSR PSP, R0");				// Loads the content of R0 to PSP register
 	__asm volatile ("MOV R0, #0X02");			// Writes the value to set SPSEL bit from CONTROL in R0
 	__asm volatile ("MSR CONTROL, R0");			// Sets SPSEL to 1
 }
 
+void generate_exception(void)
+{
+	__asm volatile ("SVC #0X5");				// Uses SVC with any value from 0 to 255 to trigger an exception
+}
+
 int main(void)
 {
     /* Loop forever */
 	for(;;);
+}
+
+void SVC_Handler(void)
+{
+	// TODO: Print something here with SWV
 }

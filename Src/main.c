@@ -53,6 +53,7 @@ __attribute__((naked)) void change_sp_to_psp(void)
 	__asm volatile ("MSR PSP, R0");				// Loads the content of R0 to PSP register
 	__asm volatile ("MOV R0, #0X02");			// Writes the value to set SPSEL bit from CONTROL in R0
 	__asm volatile ("MSR CONTROL, R0");			// Sets SPSEL to 1
+	__asm volatile ("BX LR");					// Returns to main()
 }
 
 void generate_exception(void)

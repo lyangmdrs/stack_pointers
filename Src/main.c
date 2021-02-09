@@ -44,7 +44,7 @@ __attribute__((naked)) void change_sp_to_psp(void)
 	__asm volatile (".equ S_STACK, E_RAM");					// Stack starts at the end of RAM
 
 	__asm volatile (".equ S_MSP_STACK, S_STACK");			// MSP space starts with Stack
-	__asm volatile (".equ E_MSP_STACK, ( S_STACK + 512 )");	// MSP occupies the first 512 B of Stack
+	__asm volatile (".equ E_MSP_STACK, ( S_STACK - 512 )");	// MSP occupies the first 512 B of Stack
 
 	__asm volatile (".equ S_PSP_STACK, E_MSP_STACK");		// PSP space starts at the end of MSP space
 

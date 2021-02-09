@@ -43,6 +43,14 @@
 
 #define S_PSP_STACK E_MSP_STACK				// PSP space starts at the end of MSP space
 
+__attribute__((naked)) void change_sp_to_psp(void)
+{
+	__asm volatile ("LDR R0, =S_PSP_STACK"); 	// Loads PSP start address to R0 register
+	__asm volatile ("MSR PSP, R0");				// Loads the content of R0 to PSP register
+	__asm volatile ("MOV R0, #0X02");			// Writes the value to set SPSEL bit from CONTROL in R0
+	__asm volatile ("MSR CONTROL, R0");			// Sets SPSEL to 1
+}
+
 int main(void)
 {
     /* Loop forever */

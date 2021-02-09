@@ -67,13 +67,14 @@ int do_some_calculation(int a, int b, int c)
 
 int main(void)
 {
+	printf("-= Stack Exercise =-\n");
 	change_sp_to_psp();
 
 	int ret;
 
 	ret = do_some_calculation(2, 4, 7);
 
-	// TODO: Print the value of ret with SWV
+	printf("ret: %d\n", ret);
 
 	generate_exception();
 
@@ -83,5 +84,5 @@ int main(void)
 
 void SVC_Handler(void)
 {
-	// TODO: Print something here with SWV
+	printf("in SVC_Handler!\n");
 }

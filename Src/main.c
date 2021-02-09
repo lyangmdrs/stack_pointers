@@ -67,7 +67,17 @@ int do_some_calculation(int a, int b, int c)
 
 int main(void)
 {
-    /* Loop forever */
+	change_sp_to_psp();
+
+	int ret;
+
+	ret = do_some_calculation(2, 4, 7);
+
+	// TODO: Print the value of ret with SWV
+
+	generate_exception();
+
+	/* Loop forever */
 	for(;;);
 }
 

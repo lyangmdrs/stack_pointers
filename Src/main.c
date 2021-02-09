@@ -60,6 +60,11 @@ void generate_exception(void)
 	__asm volatile ("SVC #0X5");				// Uses SVC with any value from 0 to 255 to trigger an exception
 }
 
+int do_some_calculation(int a, int b, int c)
+{
+	return a + b + c;
+}
+
 int main(void)
 {
     /* Loop forever */
